@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\UserType;
 use App\Traits\ApiTrait;
-use App\Traits\SendEmailTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +15,7 @@ use Exception;
 class LoginController extends Controller
 {
     use ApiTrait;
-    use SendEmailTrait;
+    // use SendEmailTrait;
 
     public function login(Request $request)
     {
@@ -64,7 +63,7 @@ class LoginController extends Controller
             $verificationCode = implode(array_slice($numbers, 0, 5));
             $user->verification_code = $verificationCode;
             $user->save();
-            $this->sendVerificationEmail($request->email, $user->name, $verificationCode);
+            // $this->sendVerificationEmail($request->email, $user->name, $verificationCode);
             return $this->returnSuccessMessage('Mail Sent');
         } catch (Exception $e) {
             return $this->returnError($e->getMessage());

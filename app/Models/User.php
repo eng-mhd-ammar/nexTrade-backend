@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Attribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,11 +15,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -27,25 +23,23 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected function isAdmin(): Attribute
+    {
+        return new Attribute(
+            get: fn () => Auth::check() && $this->role_id == RoleEnum::ADMIN,
+        );
+    }
+
     public function favoritesItems()
     {
         return $this->belongsToMany(Item::class, 'favorites', 'user_id', 'item_id');
@@ -59,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function rates()
     {
         return $this->hasMany(Rate::class, 'user_id');
-    }
+    }?->id
 
     public function addresses()
     {
@@ -70,11 +64,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Order::class, 'user_id');
     }
+
     public function deliveryOrders()
     {
         return $this->hasMany(Order::class, 'delivery_id');
     }
-    
+
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'user_id');

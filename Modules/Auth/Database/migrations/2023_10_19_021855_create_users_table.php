@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Auth\Enums\UserType;
 
 return new class extends Migration
 {
@@ -14,12 +15,14 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('verification_code');
+            $table->string('email');
+            $table->string('verification_code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('user_type_id')->nullable()->constrained("user_types")->onDelete('cascade')->default(3);
+            $table->foreignId('user_type_id')->default(UserType::USER->value)->nullable()->comment(UserType::tableComment())->constrained("user_types")->onDelete('cascade');
             $table->rememberToken();
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
