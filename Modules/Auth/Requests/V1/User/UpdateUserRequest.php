@@ -3,10 +3,12 @@
 namespace Modules\Auth\Requests\V1\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Auth\Enums\Gender;
 use Modules\Auth\Enums\UserType;
 use Modules\Auth\Models\User;
 use Modules\Core\Rules\ArrayOrMinusOne;
 use Modules\Core\Rules\EnumRule;
+use Modules\Core\Rules\FileOrUrl;
 use Modules\Core\Rules\UniqueNotDeleted;
 
 class UpdateUserRequest extends FormRequest
@@ -14,7 +16,10 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string'],
+            'avatar' => [new FileOrUrl(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'webp', 'heic', 'heif', 'svg'])],
+            'first_name' => ['string'],
+            'last_name' => ['string'],
+            'gender' => ['boolean', EnumRule::make(Gender::class)],
             'user_type_id' => ['exists:user_types,id', 'string', EnumRule::make(UserType::class)],
             'email' => ['string', 'email', new UniqueNotDeleted(User::class, 'email')],
             'password' => ['string', 'min:8', 'max:20'],

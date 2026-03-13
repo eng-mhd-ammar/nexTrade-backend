@@ -19,7 +19,10 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string'],
+            'avatar' => [new FileOrUrl(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'webp', 'heic', 'heif', 'svg'])],
+            'first_name' => ['string'],
+            'last_name' => ['string'],
+            'gender' => ['boolean', EnumRule::make(Gender::class)],
             'email' => ['string', 'email', new UniqueNotDeleted(User::class, 'email')],
             'password' => ['string', 'min:8', 'max:20'],
 

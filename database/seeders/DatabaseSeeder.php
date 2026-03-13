@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         UserType::create(['name' => 'Delivery']);
 
         User::create([
-            'name' => 'Admin',
+            'first_name' => 'Mhd',
+            'last_name' => 'Ammar',
             'email' => 'test@example.com',
             'password' => '11223344',
             'email_verified_at' => now(),

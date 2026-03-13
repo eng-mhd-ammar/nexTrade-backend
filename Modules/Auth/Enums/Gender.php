@@ -2,18 +2,16 @@
 
 namespace Modules\Auth\Enums;
 
-enum UserType: int
+enum Gender: int
 {
-    case ADMIN = 1;
-    case DELIVERY = 2;
-    case USER = 3;
+    case FEMALE = 0;
+    case MALE = 1;
 
     public static function matchEnum(int|string $value): self
     {
         return match ((int) $value) {
-            1 => self::ADMIN,
-            2 => self::DELIVERY,
-            3 => self::USER,
+            0 => self::FEMALE,
+            1 => self::MALE,
         };
     }
 

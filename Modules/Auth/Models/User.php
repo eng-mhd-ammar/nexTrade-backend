@@ -2,9 +2,9 @@
 
 namespace Modules\Auth\Models;
 
-use Attribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,8 +13,9 @@ use Laravel\Sanctum\HasApiTokens;
 use Modules\Address\Models\Address;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
+use Modules\Core\Observers\SyncFilesObserver;
 
-#[ObservedBy([CRUDObserver::class, CascadeSoftDeleteObserver::class])]
+#[ObservedBy([CRUDObserver::class, CascadeSoftDeleteObserver::class, SyncFilesObserver::class])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -23,8 +24,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public array $cascadeDeletes = ['addresses'];
 
+    public array $FilesFields = ['avatar'];
+
     protected $fillable = [
-        'name',
+        'avatar',
+        'first_name',
+        'last_name',
+        'gender',
         'email',
         'password',
         'verification_code',
@@ -41,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'user_type_id' => \Modules\Auth\Enums\UserType::class,
+        'gender' => \Modules\Auth\Enums\Gender::class,
     ];
 
     protected function isAdmin(): Attribute
@@ -61,6 +68,20 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return new Attribute(
             get: fn () => Auth::check() && $this->role_id == UserType::DELIVERY,
+        );
+    }
+
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->first_name . " " . $this->last_name,
+        );
+    }
+
+    protected function avatarUrl(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->avatar ? asset($this->avatar) : "",
         );
     }
 
@@ -111,8 +132,10 @@ class User extends Authenticatable implements MustVerifyEmail
         $search = strtolower(str_replace(' ', '', $value));
 
         return $query->where(function ($q) use ($search) {
-            $q->whereRaw("LOWER(REPLACE(name, ' ', '')) LIKE ?", ["%{$search}%"])
-                ->orWhereRaw("LOWER(REPLACE(email, ' ', '')) LIKE ?", ["%{$search}%"]);
+            $q->whereRaw("LOWER(REPLACE(first_name, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->whereRaw("LOWER(REPLACE(last_name, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("LOWER(REPLACE(email, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(LOWER(REPLACE(first_name, ' ', '')), LOWER(REPLACE(last_name, ' ', ''))) LIKE ?", ["%{$search}%"]);
         });
     }
 }

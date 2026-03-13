@@ -30,7 +30,10 @@ class ProfileResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'avatar' => $this->avatar,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'gender' => $this->gender,
             'email' => $this->email,
 
             // 'favorites_items' => FavoriteResource::collection($this->whenLoaded('favoritesItems')),
