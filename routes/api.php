@@ -13,16 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['auth:sanctum', 'ability:user']], function () {
-    Route::post('/', function () {
-        return 'User';
-    });
-});
-Route::group(['middleware' => ['auth:sanctum', 'ability:admin']], function () {
-    Route::post('/admin', function () {
-        return 'Admin';
-    });
-});
+Route::get('/test', function () {
+    throw new Exception('Test Exception');
+})->middleware();
+
+// Route::group(['middleware' => ['auth:sanctum', 'ability:user']], function () {
+//     Route::post('/', function () {
+//         return 'User';
+//     });
+// });
+// Route::group(['middleware' => ['auth:sanctum', 'ability:admin']], function () {
+//     Route::post('/admin', function () {
+//         return 'Admin';
+//     });
+// });
 
 
 // Route::middleware('auth:sanctum')->post('/', function (Request $request) {

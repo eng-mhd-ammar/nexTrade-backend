@@ -2,11 +2,6 @@
 
 namespace Modules\Auth\Models;
 
-use App\Models\Address;
-use App\Models\Item;
-use App\Models\Notification;
-use App\Models\Order;
-use App\Models\Rate;
 use Attribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -15,14 +10,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Address\Models\Address;
+use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
 
-#[ObservedBy([CRUDObserver::class])]
+#[ObservedBy([CRUDObserver::class, CascadeSoftDeleteObserver::class])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected string $logChannel = 'user';
+
+    public array $cascadeDeletes = ['addresses'];
 
     protected $fillable = [
         'name',
@@ -65,40 +64,40 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function favoritesItems()
-    {
-        return $this->belongsToMany(Item::class, 'favorites', 'user_id', 'item_id');
-    }
+    // public function favoritesItems()
+    // {
+    //     return $this->belongsToMany(Item::class, 'favorites', 'user_id', 'item_id');
+    // }
 
-    public function cartItems()
-    {
-        return $this->belongsToMany(Item::class, 'carts');
-    }
+    // public function cartItems()
+    // {
+    //     return $this->belongsToMany(Item::class, 'carts');
+    // }
 
-    public function rates()
-    {
-        return $this->hasMany(Rate::class, 'user_id');
-    }
+    // public function rates()
+    // {
+    //     return $this->hasMany(Rate::class, 'user_id');
+    // }
 
     public function addresses()
     {
         return $this->hasMany(Address::class, 'user_id');
     }
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class, 'user_id');
-    }
+    // public function orders()
+    // {
+    //     return $this->hasMany(Order::class, 'user_id');
+    // }
 
-    public function deliveryOrders()
-    {
-        return $this->hasMany(Order::class, 'delivery_id');
-    }
+    // public function deliveryOrders()
+    // {
+    //     return $this->hasMany(Order::class, 'delivery_id');
+    // }
 
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class, 'user_id');
-    }
+    // public function notifications()
+    // {
+    //     return $this->hasMany(Notification::class, 'user_id');
+    // }
 
     public function type()
     {

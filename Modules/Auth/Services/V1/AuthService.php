@@ -49,6 +49,7 @@ class AuthService implements AuthServiceInterface
         // Create token
         $tokenName = 'apiToken_' . now()->timestamp;
         $token = $user->createToken($tokenName, $abilities, now()->addWeek())->plainTextToken;
+        dd($abilities);
 
         return [
             'token' => $token,

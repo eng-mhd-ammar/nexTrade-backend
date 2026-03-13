@@ -26,7 +26,7 @@ class UserController extends BaseController
     public function show(string $modelId)
     {
         $model = $this->modelService->show($modelId);
-        return (new Response(UserResource::make($model)))->success(message: "User type details.");
+        return (new Response(UserResource::make($model)))->success(message: "User details.");
     }
 
     public function create(CreateUserRequest $request)

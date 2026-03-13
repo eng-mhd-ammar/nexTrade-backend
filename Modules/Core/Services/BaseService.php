@@ -18,7 +18,7 @@ class BaseService
     {
         $trashedFilter = request()->input('filter.trashed');
 
-        if (Auth::check() && !Auth::user()->is_admin() && in_array($trashedFilter, ['only', 'with'], true)) {
+        if (Auth::check() && !Auth::user()->is_admin && in_array($trashedFilter, ['only', 'with'], true)) {
             return $this->throwNotAnAdmin();
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Http\Exceptions\ExceptionsHandler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -23,8 +24,17 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        // $this->reportable(function (Throwable $e) {
+        //     //
+
+        // });
+        if (!env('APP_DEBUG')) {
+            $this->renderable(function (Throwable $exception, $request) {
+                // dd($request);
+                if ($request->is('api/*')) {
+                    return (new ExceptionsHandler)($exception);
+                }
+            });
+        }
     }
 }

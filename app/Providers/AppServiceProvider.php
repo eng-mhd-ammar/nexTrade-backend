@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Custom\CustomPaginator;
+use App\Http\Exceptions\ExceptionsHandler;
 use GuzzleHttp\Client;
 use Psr\Http\Client\ClientInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(\Modules\Auth\Providers\User\UserServiceProvider::class);
+        $this->app->register(\Modules\Address\Providers\Address\AddressServiceProvider::class);
 
         $this->app->bind(ClientInterface::class, function () {
             return new Client();
