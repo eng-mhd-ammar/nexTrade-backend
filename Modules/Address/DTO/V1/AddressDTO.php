@@ -10,11 +10,13 @@ class AddressDTO extends BaseDTO
 {
     public function __construct(
         public ?string $name,
+        public ?string $country,
+        public ?string $state,
         public ?string $city,
         public ?string $street,
         public ?string $phone,
-        public ?string $location_lat,
-        public ?string $location_long,
+        public ?array $coordinates,
+        public ?string $details,
     ) {
     }
 
@@ -22,11 +24,16 @@ class AddressDTO extends BaseDTO
     {
         return new self(
             name: $request->validated('name'),
+            country: $request->validated('country'),
+            state: $request->validated('state'),
             city: $request->validated('city'),
             street: $request->validated('street'),
             phone: $request->validated('phone'),
-            location_lat: $request->validated('location_lat'),
-            location_long: $request->validated('location_long'),
+            coordinates: [
+                "lat" => $request->validated('lat'),
+                "lng" => $request->validated('lng')
+            ],
+            details: $request->validated('details'),
         );
     }
 }

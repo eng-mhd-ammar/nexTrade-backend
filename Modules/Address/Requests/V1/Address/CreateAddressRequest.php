@@ -11,12 +11,14 @@ class CreateAddressRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'street' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-
-            'location_lat' => ['required', 'numeric', 'between:-90,90'],
-            'location_long' => ['required', 'numeric', 'between:-180,180'],
+            'lat' => ['required', 'numeric', 'between:-90,90'],
+            'lng' => ['required', 'numeric', 'between:-180,180'],
+            'details' => ['string', 'min:3', 'max:5000'],
         ];
     }
 }

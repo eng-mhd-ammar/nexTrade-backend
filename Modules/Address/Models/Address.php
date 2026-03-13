@@ -21,11 +21,17 @@ class Address extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'country',
+        'state',
         'city',
         'street',
         'phone',
-        'location_lat',
-        'location_long',
+        'coordinates',
+        'details',
+    ];
+
+    protected $casts = [
+        'coordinates' => 'array',
     ];
 
     public function users()

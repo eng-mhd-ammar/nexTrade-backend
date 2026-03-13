@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId("user_id")->constrained("users")->onDelete('cascade');
             $table->string("name");
+            $table->string("country");
+            $table->string("state");
             $table->string("city");
             $table->string("street");
             $table->String("phone");
-            $table->double("location_lat");
-            $table->double("location_long");
+            $table->json("coordinates");
+            $table->text('details')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

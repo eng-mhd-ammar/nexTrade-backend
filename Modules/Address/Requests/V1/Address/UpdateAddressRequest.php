@@ -10,12 +10,14 @@ class UpdateAddressRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
+            'state' => ['string', 'max:255'],
+            'country' => ['string', 'max:255'],
             'city' => ['string', 'max:255'],
             'street' => ['string', 'max:255'],
             'phone' => ['string', 'max:20'],
-
-            'location_lat' => ['numeric', 'between:-90,90'],
-            'location_long' => ['numeric', 'between:-180,180'],
+            'lat' => ['required_with:lng', 'numeric', 'between:-90,90'],
+            'lng' => ['required_with:lat', 'numeric', 'between:-180,180'],
+            'details' => ['string', 'min:3', 'max:5000'],
         ];
     }
 }
