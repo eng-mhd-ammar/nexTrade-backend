@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rates', function (Blueprint $table) {
-            $table->id();
-            $table->tinyInteger('rating')->default(0);
-            $table->string('comment')->nullable();
-            $table->foreignId("user_id")->constrained("users")->onDelete('cascade');
-            $table->foreignId("order_id")->constrained("orders")->onDelete('cascade');
-            $table->timestamps();
-        });
+        // Schema::create('rates', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->tinyInteger('rating')->default(0);
+        //     $table->string('comment')->nullable();
+        //     $table->foreignId("user_id")->constrained("users")->onDelete('cascade');
+        //     $table->foreignId("order_id")->constrained("orders")->onDelete('cascade');
+        //     $table->timestamps();
+        // });
     }
 
     /**

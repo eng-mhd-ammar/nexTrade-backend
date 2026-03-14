@@ -14,7 +14,7 @@ class UserType extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected string $logChannel = 'user-type';
+    public static string $LOG_CHANNEL = 'user-type';
 
     public array $cascadeDeletes = ['users'];
 

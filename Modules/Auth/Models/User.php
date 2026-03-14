@@ -4,13 +4,17 @@ namespace Modules\Auth\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Address\Models\Address;
+use Modules\Auth\Enums\UserType as UserTypeEnum;
+use Modules\Auth\Models\UserType;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
 use Modules\Core\Observers\SyncFilesObserver;
@@ -20,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    protected string $logChannel = 'user';
+    public static string $LOG_CHANNEL = 'user';
 
     public array $cascadeDeletes = ['addresses'];
 
@@ -53,21 +57,21 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function isAdmin(): Attribute
     {
         return new Attribute(
-            get: fn () => Auth::check() && $this->role_id == UserType::ADMIN,
+            get: fn () => Auth::check() && $this->role_id == UserTypeEnum::ADMIN,
         );
     }
 
     protected function isCustomer(): Attribute
     {
         return new Attribute(
-            get: fn () => Auth::check() && $this->role_id == UserType::USER,
+            get: fn () => Auth::check() && $this->role_id == UserTypeEnum::USER,
         );
     }
 
     protected function isDelivery(): Attribute
     {
         return new Attribute(
-            get: fn () => Auth::check() && $this->role_id == UserType::DELIVERY,
+            get: fn () => Auth::check() && $this->role_id == UserTypeEnum::DELIVERY,
         );
     }
 

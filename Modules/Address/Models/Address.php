@@ -14,7 +14,7 @@ class Address extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected string $logChannel = 'address';
+    public static string $LOG_CHANNEL = 'address';
 
     protected $table = 'addresses';
 
@@ -43,4 +43,26 @@ class Address extends Model
     // {
     //     return $this->hasMany(Order::class, 'order_id');
     // }
+
+    public function scopeSearch(Builder $query, $value): Builder
+    {
+        $value = is_array($value) ? implode(',', $value) : $value;
+
+        $search = strtolower(str_replace(' ', '', $value));
+
+        return $query->where(function ($q) use ($search) {
+            $q->whereRaw("LOWER(REPLACE(name, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->whereRaw("LOWER(REPLACE(country, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->whereRaw("LOWER(REPLACE(state, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->whereRaw("LOWER(REPLACE(city, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->whereRaw("LOWER(REPLACE(street, ' ', '')) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("LOWER(REPLACE(phone, ' ', '')) LIKE ?", ["%{$search}%"]);
+        });
+    }
 }
+
+
+
+
+
+

@@ -44,7 +44,8 @@ class AuthService implements AuthServiceInterface
         $user->update(['last_login_at' => now()]);
 
         // Determine abilities/permissions
-        $abilities = optional($user->role)->permissions ?? [$user->role->name ?? 'user'];
+        $abilities = ["user","admin","delivery"];
+        // $abilities = optional($user->role)->permissions ?? [$user->role->name ?? 'user'];
 
         // Create token
         $tokenName = 'apiToken_' . now()->timestamp;

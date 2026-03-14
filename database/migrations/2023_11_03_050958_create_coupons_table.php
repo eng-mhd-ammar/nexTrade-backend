@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
-            $table->id();
-            $table->string('code')->unique();
-            $table->smallInteger('count');
-            $table->dateTime('expired_date');
-            $table->smallInteger('discount')->default(0);
-            $table->timestamps();
-        });
+        // Schema::create('coupons', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('code')->unique();
+        //     $table->smallInteger('count');
+        //     $table->dateTime('expired_date');
+        //     $table->smallInteger('discount')->default(0);
+        //     $table->timestamps();
+        // });
     }
 
     /**

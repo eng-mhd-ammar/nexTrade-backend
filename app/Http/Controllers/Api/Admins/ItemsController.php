@@ -21,9 +21,9 @@ class ItemsController extends Controller
         try {
             $rules = [
                 'name_ar' => 'required',
-                'desk_ar' => 'required',
+                'desc_ar' => 'required',
                 'name_en' => 'required',
-                'desk_en' => 'required',
+                'desc_en' => 'required',
                 'count' => 'required',
                 'price' => 'required',
                 'discount' => 'required',
@@ -35,9 +35,9 @@ class ItemsController extends Controller
             $path = $request->file('image')->store('images/items', 'public');
             $data = [
                 'name_ar' => $request->name_ar,
-                'desk_ar' => $request->desk_ar,
+                'desc_ar' => $request->desc_ar,
                 'name_en' => $request->name_en,
-                'desk_en' => $request->desk_en,
+                'desc_en' => $request->desc_en,
                 'count' => $request->count,
                 'price' => $request->price,
                 'discount' => $request->discount,
@@ -74,8 +74,8 @@ class ItemsController extends Controller
                 'item_id' => 'required',
                 'name_en' => 'required',
                 'name_ar' => 'required',
-                'desk_ar' => 'required',
-                'desk_en' => 'required',
+                'desc_ar' => 'required',
+                'desc_en' => 'required',
                 'count' => 'required',
                 'active' => 'required',
                 'price' => 'required',
@@ -93,8 +93,8 @@ class ItemsController extends Controller
             }
             if ($item->name_en != $request->name_en) $item->name_en = $request->name_en;
             if ($item->name_ar != $request->name_ar) $item->name_ar = $request->name_ar;
-            if ($item->desk_ar != $request->desk_ar) $item->desk_ar = $request->desk_ar;
-            if ($item->desk_en != $request->desk_en) $item->desk_en = $request->desk_en;
+            if ($item->desc_ar != $request->desc_ar) $item->desc_ar = $request->desc_ar;
+            if ($item->desc_en != $request->desc_en) $item->desc_en = $request->desc_en;
             if ($item->count != $request->count) $item->count = $request->count;
             if ($item->active != $request->active) $item->active = $request->active;
             if ($item->price != $request->price) $item->price = $request->price;
@@ -128,7 +128,7 @@ class ItemsController extends Controller
             return $this->returnError($e->getMessage());
         }
     }
-    
+
     public function search(Request $request)
     {
         try {

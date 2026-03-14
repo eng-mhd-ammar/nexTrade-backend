@@ -1,0 +1,33 @@
+<?php
+
+namespace Modules\Order\Resources\V1;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Auth\Resources\V1\UserResource;
+
+class CartResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'city' => $this->city,
+            'state' => $this->state,
+            'country' => $this->country,
+            'street' => $this->street,
+            'phone' => $this->phone,
+            'coordinates' => $this->coordinates,
+            'details' => $this->details,
+
+            'user' => new UserResource($this->whenLoaded('user')),
+            // 'orders' => OrderResource::collection($this->whenLoaded('orders')),
+        ];
+    }
+}

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('title_ar');
-            $table->string('body_ar');
-            $table->string('title_en');
-            $table->string('body_en');
-            $table->timestamps();
-        });
+        // Schema::create('settings', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('title_ar');
+        //     $table->string('body_ar');
+        //     $table->string('title_en');
+        //     $table->string('body_en');
+        //     $table->timestamps();
+        // });
     }
 
     /**
