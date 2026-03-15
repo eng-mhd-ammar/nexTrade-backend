@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Category\Models\Category;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
 

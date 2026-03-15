@@ -25,12 +25,10 @@ class StockResource extends JsonResource
             'quantity' => $this->quantity,
             'weight' => $this->weight,
             'sku' => $this->sku,
-            'images' => $this->images,
+            'images' => $this->images_urls,
             'attributes' => $this->attributes,
 
             'product' => new ProductResource($this->whenLoaded('product')),
-            // 'category' => new CategoryResource($this->whenLoaded('category')),
-            // 'orders' => OrderResource::collection($this->whenLoaded('orders')),
         ];
     }
 }

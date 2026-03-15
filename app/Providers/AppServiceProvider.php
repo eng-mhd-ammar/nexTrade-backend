@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Modules\Auth\Providers\User\UserServiceProvider::class);
         $this->app->register(\Modules\Address\Providers\Address\AddressServiceProvider::class);
         $this->app->register(\Modules\Product\Providers\Product\ProductServiceProvider::class);
+        $this->app->register(\Modules\Category\Providers\Category\CategoryServiceProvider::class);
 
         $this->app->bind(ClientInterface::class, function () {
             return new Client();

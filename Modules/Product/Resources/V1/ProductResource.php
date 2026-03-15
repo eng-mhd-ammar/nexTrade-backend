@@ -5,6 +5,7 @@ namespace Modules\Product\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Auth\Resources\V1\UserResource;
+use Modules\Category\Resources\V1\CategoryResource;
 
 class ProductResource extends JsonResource
 {
@@ -30,8 +31,7 @@ class ProductResource extends JsonResource
             'note' => $this->note,
 
             'stocks' => StockResource::collection($this->whenLoaded('stocks')),
-            // 'user' => new UserResource($this->whenLoaded('user')),
-            // 'orders' => OrderResource::collection($this->whenLoaded('orders')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
         ];
     }
 }

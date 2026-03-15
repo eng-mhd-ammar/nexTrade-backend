@@ -46,6 +46,13 @@ class Stock extends Model
         );
     }
 
+    protected function imagesUrls(): Attribute
+    {
+        return new Attribute(
+            get: fn () => array_map(function ($image) { return asset($image); }, $this->images),
+        );
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
