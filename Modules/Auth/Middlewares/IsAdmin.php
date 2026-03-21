@@ -17,10 +17,9 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->is_admin) {
+        if (Auth::guard('user')->check() && Auth::user()->is_admin) {
             return $next($request);
         }
-
-        return (new UtilitiesResponse())->error(message: 'أنت لست مديراً.');
+        return (new UtilitiesResponse())->error(message: 'Sorry you are not an admin.');
     }
 }

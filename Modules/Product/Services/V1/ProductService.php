@@ -16,7 +16,6 @@ class ProductService extends BaseService implements ProductServiceInterface
 
     public function create($DTO)
     {
-        // dd($DTO);
         $product = parent::create($DTO);
 
         foreach ($DTO->stocks as $stockData) {

@@ -28,46 +28,59 @@ class AuthController extends BaseController
     {
     }
 
+
+
     public function login(LoginRequest $request): JsonResponse
     {
-        $data = $this->authService->login(LoginDTO::fromRequest($request));
-        return (new Response($data))->success(message: "Logged in successfully.");
+        $tokens = $this->authService->login(LoginDTO::fromRequest($request));
+
+        // $data = ['access_token' => $tokens['access_token']];
+        // $cookies = ['refresh_token' => $tokens['refresh_token']];
+
+        return (new Response($tokens))->success(message: "Logged in successfully."/*, cookies: $cookies*/);
     }
 
-    public function signup(SignUpRequest $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $data = $this->authService->signup(SignupDTO::fromRequest($request));
-        return (new Response($data))->success(message: "signed up successfully.");
+        $data = $this->authService->register(RegisterDTO::fromRequest($request));
+        return (new Response($data))->success(message: "Registered successfully.");
     }
 
-    public function signupWithStore(SignUpWithStoreRequest $request): JsonResponse
+    public function checkOTP(OtpRequest $request)
     {
-        $data = $this->authService->signupWithStore(UserDTO::fromArray($request->validated()), StoreRequestDTO::fromArray($request->validated()));
-        return (new Response($data))->success(message: "signed up successfully.");
+        $tokens = $this->authService->checkOTP(OtpDTO::fromRequest($request));
+
+        // $data = ['access_token' => $tokens['access_token']];
+        // $cookies = ['refresh_token' => $tokens['refresh_token']];
+
+        return (new Response($tokens))->success(message: "Verified Successfully."/*, cookies: $cookies*/);
     }
 
-    public function send_otp(SendCodeRequest $request)
+    public function sendCode(SendCodeRequest $request)
     {
         $tokens = $this->authService->sendCode(CodeDTO::fromRequest($request));
-        return (new Response($tokens))->success(message: "OTP sent successfully.");
-    }
-
-    public function check_otp(OtpRequest $request)
-    {
-
-        $tokens = $this->authService->checkOTP(OtpDTO::fromRequest($request));
-        return (new Response($tokens))->success(message: "Verified Successfully.");
-    }
-
-    public function sendResetLink(SendResetPasswordLinkRequest $request)
-    {
-        $user = $this->authService->sendResetLink(SendResetPasswordLinkDTO::fromRequest($request));
-        return (new Response())->success(message: "Email Sent Successfully.");
+        return (new Response($tokens))->success(message: "Otp sent successfully.");
     }
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        $data = $this->authService->resetPassword(ResetPasswordDTO::fromRequest($request));
-        return $data;
+        $this->authService->resetPassword(ResetPasswordDTO::fromRequest($request));
+        return (new Response())->success(message: "Password was reset successfully.");
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $this->authService->changePassword(ChangePasswordDTO::fromRequest($request));
+        return (new Response())->success(message: "Password was changed successfully.");
+    }
+
+    public function refresh()
+    {
+        $tokens = $this->authService->refresh(/*Auth::guard(GuardType::USER->value)->id()*/);
+
+        // $data = ['access_token' => $tokens['access_token']];
+        // $cookies = ['refresh_token' => $tokens['refresh_token']];
+
+        return (new Response($tokens))->success(message: "Tokens refreshed successfully."/*, cookies: $cookies*/);
     }
 }

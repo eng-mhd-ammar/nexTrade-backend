@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Auth\Models\User;
 use Modules\Category\Models\Category;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
+use Modules\Favorite\Models\Favorite;
 
 #[ObservedBy([CRUDObserver::class, CascadeSoftDeleteObserver::class])]
 class Product extends Model
@@ -38,10 +40,14 @@ class Product extends Model
         'is_active' => 'boolean',
     ];
 
-    // public function userFavorites()
-    // {
-    //     return $this->belongsToMany(User::class, 'favorites', 'item_id', 'user_id');
-    // }
+    public function favoritesUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'product_id', 'user_id');
+    }
+
+    public function favorites() {
+        return $this->hasMany(Favorite::class, 'product_id', 'id');
+    }
 
     public function stocks()
     {

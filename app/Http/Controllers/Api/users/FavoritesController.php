@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Users;
+namespace App\Http\Controllers\Api\users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class FavoritesController extends Controller
 {
-    
-
     use ApiTrait;
 
     public function addOrRemove(Request $request)

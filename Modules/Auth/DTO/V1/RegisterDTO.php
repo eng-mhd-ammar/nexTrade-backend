@@ -2,10 +2,11 @@
 
 namespace Modules\Auth\DTO\V1;
 
-use Modules\Auth\Requests\V1\Auth\SignUpRequest;
+use Carbon\Carbon;
+use Modules\Auth\Requests\V1\Auth\RegisterRequest;
 use Modules\Core\DTO\BaseDTO;
 
-class SignupDTO extends BaseDTO
+class RegisterDTO extends BaseDTO
 {
     public function __construct(
         public ?string $avatar,
@@ -14,7 +15,7 @@ class SignupDTO extends BaseDTO
         public ?bool $gender,
         public ?string $email,
         public ?string $password,
-        public ?string $user_type_id,
+        // public ?string $user_type_id,
         public ?array $addresses,
     ) {
     }
@@ -28,7 +29,7 @@ class SignupDTO extends BaseDTO
             gender: $request->validated('gender'),
             email: $request->validated('email'),
             password: $request->validated('password'),
-            user_type_id: $request->validated('user_type_id'),
+            // user_type_id: $request->validated('user_type_id'),
 
             addresses: self::prepareRequestArray($request->validated('addresses')),
         );

@@ -55,13 +55,13 @@ class BaseService
     {
         return $this->repository->deleteMany($ids);
     }
-    public function force_deleteMany(array $ids)
+    public function forceDeleteMany(array $ids)
     {
-        return $this->repository->force_deleteMany($ids);
+        return $this->repository->forceDeleteMany($ids);
     }
-    public function restore_many(array $ids)
+    public function restoreMany(array $ids)
     {
-        return $this->repository->restore_many($ids);
+        return $this->repository->restoreMany($ids);
     }
     public function switchActivation(string $modelId)
     {

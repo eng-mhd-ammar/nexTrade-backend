@@ -18,11 +18,15 @@ use Modules\Auth\Models\UserType;
 use Modules\Core\Observers\CascadeSoftDeleteObserver;
 use Modules\Core\Observers\CRUDObserver;
 use Modules\Core\Observers\SyncFilesObserver;
+use Modules\Favorite\Models\Favorite;
+use Modules\Product\Models\Product;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[ObservedBy([CRUDObserver::class, CascadeSoftDeleteObserver::class, SyncFilesObserver::class])]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     public static string $LOG_CHANNEL = 'user';
 
@@ -39,7 +43,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'verification_code',
         'email_verified_at',
-        'user_type_id',
     ];
 
     protected $hidden = [
@@ -50,28 +53,27 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'user_type_id' => \Modules\Auth\Enums\UserType::class,
         'gender' => \Modules\Auth\Enums\Gender::class,
     ];
 
-    protected function isAdmin(): Attribute
+    public function isAdmin(): Attribute
     {
         return new Attribute(
-            get: fn () => Auth::check() && $this->role_id == UserTypeEnum::ADMIN,
+            get: fn () => $this->hasRole('admin'),
         );
     }
 
-    protected function isCustomer(): Attribute
+    public function isCustomer(): Attribute
     {
         return new Attribute(
-            get: fn () => Auth::check() && $this->role_id == UserTypeEnum::USER,
+            get: fn () => $this->hasRole('customer'),
         );
     }
 
-    protected function isDelivery(): Attribute
+    public function isDelivery(): Attribute
     {
         return new Attribute(
-            get: fn () => Auth::check() && $this->role_id == UserTypeEnum::DELIVERY,
+            get: fn () => $this->hasRole('delivery'),
         );
     }
 
@@ -89,10 +91,24 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    // public function favoritesItems()
-    // {
-    //     return $this->belongsToMany(Item::class, 'favorites', 'user_id', 'item_id');
-    // }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function favoritesItems()
+    {
+        return $this->belongsToMany(Product::class, 'favorites', 'user_id', 'product_id');
+    }
+
+    public function favorites() {
+        return $this->hasMany(Favorite::class, 'user_id', 'id');
+    }
 
     // public function cartItems()
     // {

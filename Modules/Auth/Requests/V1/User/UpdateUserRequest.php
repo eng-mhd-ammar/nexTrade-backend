@@ -20,7 +20,7 @@ class UpdateUserRequest extends FormRequest
             'first_name' => ['string'],
             'last_name' => ['string'],
             'gender' => ['boolean', EnumRule::make(Gender::class)],
-            'user_type_id' => ['exists:user_types,id', 'string', EnumRule::make(UserType::class)],
+            // 'user_type_id' => ['exists:user_types,id', 'string', EnumRule::make(UserType::class)],
             'email' => ['string', 'email', new UniqueNotDeleted(User::class, 'email')],
             'password' => ['string', 'min:8', 'max:20'],
 

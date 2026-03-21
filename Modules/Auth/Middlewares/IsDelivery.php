@@ -5,10 +5,10 @@ namespace Modules\Auth\Middlewares;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 use Modules\Core\Utilities\Response as UtilitiesResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class IsSupport
+class IsDelivery
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,9 @@ class IsSupport
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->is_support) {
+        if (Auth::guard('user')->check() && Auth::user()->is_delivery) {
             return $next($request);
         }
-
-        return (new UtilitiesResponse())->error(message: 'أنت لست موظف دعم فني.');
+        return (new UtilitiesResponse())->error(message: 'Sorry you are not a delivery.');
     }
 }

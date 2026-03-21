@@ -1,14 +1,15 @@
 <?php
 
-namespace Modules\Auth\Middlewares;
+namespace Modules\Address\Middlewares;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 use Modules\Core\Utilities\Response as UtilitiesResponse;
+use Modules\Favorite\Models\Favorite;
+use Symfony\Component\HttpFoundation\Response;
 
-class IsUser
+class FavoriteOwner
 {
     /**
      * Handle an incoming request.
@@ -17,10 +18,10 @@ class IsUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->is_user) {
+        if (Auth::check() && (Auth::user()->is_admin || Favorite::query()->withTrashed()->findOrFail($request->route('modelId'))->user_id == auth()->id())) {
             return $next($request);
         }
 
-        return (new UtilitiesResponse())->error(message: 'أنت لست زبوناً.');
+        return (new UtilitiesResponse())->error(message: 'The favorite is not yours.');
     }
 }

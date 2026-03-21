@@ -9,7 +9,7 @@ Route::middleware([])->group(function () {
     Route::get('/', 'index');
     Route::get('/show/{modelId}', 'show');
 
-    Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
+    Route::middleware(['auth:user'/*, 'ability:admin'*/])->group(function () {
         Route::post('/create', 'create');
         Route::post('/update/{modelId}', 'update');
         Route::delete('/delete/{modelId}', 'delete');

@@ -3,12 +3,14 @@
 namespace Modules\Address\Requests\V1\Address;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Core\Rules\ProhibitedUnlessHasRole;
 
 class UpdateAddressRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
+            'user_id' => ['string', new ProhibitedUnlessHasRole(['admin'])],
             'name' => ['string', 'max:255'],
             'state' => ['string', 'max:255'],
             'country' => ['string', 'max:255'],

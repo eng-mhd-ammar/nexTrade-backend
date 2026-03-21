@@ -4,11 +4,10 @@ namespace Modules\Core\Rules;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
-use Modules\Auth\Enums\UserType;
 
 class ProhibitedUnlessHasRole implements ValidationRule
 {
-    public function __construct(protected Role|array $roles, protected $defaultValue = null)
+    public function __construct(protected string|array $roles, protected $defaultValue = null)
     {
         $this->roles = is_array($roles) ? $roles : [$roles];
         $this->defaultValue = $defaultValue;
@@ -32,7 +31,7 @@ class ProhibitedUnlessHasRole implements ValidationRule
             return;
         }
 
-        if (!in_array($user->role_id, $this->roles)) {
+        if (! $user->hasAnyRole($this->roles)) {
             $fail('User Does Not Have Permission.');
         }
     }

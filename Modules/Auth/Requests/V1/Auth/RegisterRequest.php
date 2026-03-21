@@ -3,16 +3,15 @@
 namespace Modules\Auth\Requests\V1\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Modules\Auth\Enums\Gender;
-use Modules\Auth\Enums\UserType;
 use Modules\Auth\Models\User;
 use Modules\Core\Rules\ArrayOrMinusOne;
 use Modules\Core\Rules\EnumRule;
 use Modules\Core\Rules\FileOrUrl;
-use Modules\Core\Rules\ProhibitedUnlessHasRole;
 use Modules\Core\Rules\UniqueNotDeleted;
 
-class SignUpRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -24,7 +23,7 @@ class SignUpRequest extends FormRequest
             'email' => ['required', 'string', 'email', new UniqueNotDeleted(User::class, 'email')],
             'password' => ['required', 'string', 'min:8', 'max:20'],
 
-            'addresses' => [new ArrayOrMinusOne],
+            'addresses' => [new ArrayOrMinusOne()],
             'address.*.id' => ['required', 'exists:addresses,id'],
             'address.*.name' => ['required', 'string'],
             'address.*.city' => ['required', 'string'],
@@ -33,5 +32,12 @@ class SignUpRequest extends FormRequest
             'address.*.location_lat' => ['required', 'numeric'],
             'address.*.location_long' => ['required', 'numeric'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'gender' => Gender::MALE->value,
+        ]);
     }
 }

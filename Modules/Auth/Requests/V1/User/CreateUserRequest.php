@@ -22,7 +22,7 @@ class CreateUserRequest extends FormRequest
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'gender' => ['required', 'boolean', EnumRule::make(Gender::class)],
-            'user_type_id' => ['exists:user_types,id', 'nullable', EnumRule::make(UserType::class)],
+            // 'user_type_id' => ['exists:user_types,id', 'nullable', EnumRule::make(UserType::class)],
             'email' => ['required', 'string', 'email', new UniqueNotDeleted(User::class, 'email')],
             'password' => ['required', 'string', 'min:8', 'max:20'],
 
@@ -40,7 +40,7 @@ class CreateUserRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'user_type_id' => $this->input('user_type_id', UserType::USER->value),
+            // 'user_type_id' => $this->input('user_type_id', UserType::USER->value),
             'gender' => Gender::MALE->value,
         ]);
     }

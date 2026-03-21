@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Modules\Address\Interfaces\V1\Address\AddressRepositoryInterface;
 use Modules\Core\Repositories\BaseRepository;
 use Modules\Address\Models\Address;
+use Modules\Core\Filters\FilterOwner;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 
@@ -18,6 +19,7 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
         return [
             AllowedFilter::exact('user', 'user_id'),
             AllowedFilter::scope('search'),
+            AllowedFilter::custom('all', new FilterOwner())->default([0]),
         ];
     }
 

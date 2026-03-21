@@ -30,7 +30,6 @@ class Handler extends ExceptionHandler
         // });
         if (!env('APP_DEBUG')) {
             $this->renderable(function (Throwable $exception, $request) {
-                // dd($request);
                 if ($request->is('api/*')) {
                     return (new ExceptionsHandler)($exception);
                 }

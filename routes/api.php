@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\users\FavoritesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-    throw new Exception('Test Exception');
-})->middleware();
+// Route::get('/test', function () {
+//     throw new Exception('Test Exception');
+// })->middleware();
+
+// Route::middleware(['auth:sanctum'])->post('/v1/favorite/create', [FavoritesController::class, 'addOrRemove']);
+// Route::middleware(['auth:sanctum'])->post('/v1/favorite/create', function () {
+//     dd('test', auth()->user());
+// });
 
 // Route::group(['middleware' => ['auth:sanctum', 'ability:user']], function () {
 //     Route::post('/', function () {

@@ -29,7 +29,7 @@ class BaseRepository
             ->allowedIncludes($this->allowedIncludes())
             ->defaultSort(['-created_at']);
 
-        $this->originalQuery = $this->query;
+        $this->originalQuery = clone $this->query;
     }
 
     public function resetQuery(): static
@@ -114,7 +114,7 @@ class BaseRepository
 
     public function forceDeleteMany(array $ids): void
     {
-        $this->query->onlyTrashed()->whereIn('id', $ids)->forceDelete();
+        $this->query->withTrashed()->whereIn('id', $ids)->forceDelete();
     }
 
     public function restoreMany(array $ids): void
@@ -124,7 +124,7 @@ class BaseRepository
 
     public function forceDelete($modelId): void
     {
-        $this->query->onlyTrashed()->findOrFail($modelId)->forceDelete();
+        $this->query->withTrashed()->findOrFail($modelId)->forceDelete();
     }
 
     public function restore($modelId): Model

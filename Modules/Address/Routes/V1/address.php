@@ -5,7 +5,7 @@ namespace Modules\Auth\Routes\V1;
 use Illuminate\Support\Facades\Route;
 use Modules\Address\Middlewares\AddressOwner;
 
-Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function () {
+Route::middleware(['auth:user'/*, 'ability:user,admin'*/])->group(function () {
     Route::post('/create', 'create');
     Route::get('/', 'index');
 
